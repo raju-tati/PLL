@@ -23,11 +23,9 @@ my $count = scalar @ports;
 while($count) {
     async {
         my $port = shift(@ports);
-
         tcp_connect "$target", $port, Coro::rouse_cb;
-        my $fh = unblock +(Coro::rouse_wait)[0];
-
-        print "$target - Port $port is open\n";        
+        my $fh = unblock +(Coro::rouse_wait)[0] or terminate;
+        print "$target - Port $port is open\n";
     };
     $count = $count - 1;
 }
