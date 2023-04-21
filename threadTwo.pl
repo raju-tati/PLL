@@ -1,22 +1,22 @@
 use strict;
 use warnings;
-use Thread qw(yield async);
+use experimentals;
+use Thread qw(async);
 use Thread::Queue;
 
 my $queue = Thread::Queue->new();
 
-my $thread = async {
+async {
     $queue->enqueue(23);
-    print "current size of queue: ", $queue->pending(), "\n";
+    say "current size of queue: ", $queue->pending();
 };
 
-my $anotherThread = async {
+async {
     my $value = $queue->dequeue();
-    print "value: ", $value, "\n";
-    print "current size of queue: ", $queue->pending(), "\n";
+    say "value: ", $value;
+    say "current size of queue: ", $queue->pending();
 };
 
 sleep 1;
 
-$thread->detach();
-$anotherThread->detach();
+$_->detach() for (threads->list());
