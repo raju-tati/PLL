@@ -13,6 +13,7 @@ for (0 .. 4) {
         print $num, "\n";
     };
 
+    print $thread->tid, "\n";
     push @threads, $thread;
 }
 
