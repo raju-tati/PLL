@@ -27,6 +27,14 @@ sub main() {
             say "key deleted";
         }
     };
+
+    async {
+        if( $redis->exists("key") ) {
+            say "key still exists";
+        } else {
+            say "key doesnt exists";
+        }
+    };
 }
 
 main();
