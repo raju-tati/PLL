@@ -9,6 +9,8 @@ my $redis = Redis->new();
 sub main() {
     async {
         $redis->set("key" => "value");
+        $redis->set("key1" => "value1");
+        $redis->set("key2" => "value2");
     };
 
     async {
@@ -35,8 +37,18 @@ sub main() {
             say "key doesnt exists";
         }
     };
+
+    async {
+        my @keys = $redis->keys("*");
+        say join(", ", @keys);
+    };
+
+    async {
+        my $randomKey = $redis->randomKey();
+        say "randomKey ", $randomKey;
+    };
 }
 
 main();
-sleep 1;
+sleep 2;
 $_->detach() for (threads->list());
