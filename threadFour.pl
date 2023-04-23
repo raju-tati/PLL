@@ -14,6 +14,19 @@ sub main() {
     async {
         say $redis->get("key");
     };
+
+    async {
+        if( $redis->exists("key") ) {
+            say "key exists on redis";
+        }
+    };
+
+    async {
+        if( $redis->exists("key") ) {
+            $redis->del("key");
+            say "key deleted";
+        }
+    };
 }
 
 main();
