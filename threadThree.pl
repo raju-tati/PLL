@@ -26,15 +26,61 @@ sub fetchPages($urls) {
 sub main() {
     async { 
         say fibonacci(4);
-        say fibonacci(31);
+        say fibonacci(34);
+        say fibonacci(34);
+        say fibonacci(34);
+
+        if(threads->self()->is_running()) {
+            say "thread is running";
+            say "yield thread ", threads->self()->tid();
+            threads->yield(); # give cpu to other threads
+        }
+        
+        say fibonacci(34);
+        say fibonacci(34);
+        say fibonacci(34);
+        say fibonacci(34);
 
         async {
             say "thread inside thread";
         };
     };
 
+    async {
+        say fibonacci(33);
+        say fibonacci(33);
+        say fibonacci(33);
+        say fibonacci(33);
+        say fibonacci(33);
+        say fibonacci(33);
+        say fibonacci(33);
+        say fibonacci(33);
+    };
+
+    async {
+        say fibonacci(32);
+        say fibonacci(32);
+        say fibonacci(32);
+        say fibonacci(32);
+        say fibonacci(32);
+        say fibonacci(32);
+        say fibonacci(32);
+        say fibonacci(32);
+    };
+
     async { 
         say fibonacci(2);
+        say fibonacci(35);
+        
+        say "Exiting thread ", threads->self()->tid();  # get thread id
+        threads->exit();    # terminate thread
+
+        say fibonacci(35);
+        say fibonacci(35);
+        say fibonacci(35);
+        say fibonacci(35);
+        say fibonacci(35);
+        
         say fibonacci(35);  
     };
 
@@ -47,5 +93,5 @@ sub main() {
 }
 
 main();
-sleep 10;
+sleep 60;
 $_->detach() for (threads->list());
