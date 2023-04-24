@@ -2,6 +2,7 @@ use strict;
 use warnings;
 use experimentals;
 use threads;
+use Time::HiRes;
 use LWP::Simple qw(get);
 
 sub fibonacci($num) {
@@ -93,5 +94,16 @@ sub main() {
 }
 
 main();
-sleep 60;
-$_->detach() for (threads->list());
+
+while(1) {
+    foreach my $thread (threads->list(threads::joinable)) {
+        $thread->detach();
+    }
+
+    my @threads = threads->list(threads::all);
+    if(scalar @threads == 0) {
+        exit();
+    }
+
+    Time::HiRes::sleep(0.1);
+}
