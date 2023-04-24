@@ -102,8 +102,8 @@ while(1) {
 
     my @threads = threads->list(threads::all);
     if(scalar @threads == 0) {
-        exit();
+        last;
     }
-
+    
     Time::HiRes::sleep(0.1);
 }
