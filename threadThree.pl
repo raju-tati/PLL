@@ -17,6 +17,7 @@ sub fibonacci($num) {
 
 sub fetchPages($urls) {
     foreach my $url (@{$urls}) {
+        Time::HiRes::sleep(0.001);
         async {
             my $page = get($url);
             say $url, " downloaded";
@@ -93,12 +94,20 @@ sub main() {
     fetchPages(\@urls);
 }
 
+my $signalThread = async {
+    use sigtrap 'handler' => \&signalHandler, qw(INT);
+};
+sub signalHandler($signalName) {
+    say "got an intterupt, print some info";
+    my @threads = threads->list(threads::all);
+    say "remaining threads: ", scalar @threads;
+}
 my $monitorThread = async {
     while(1) {
         foreach my $thread (threads->list(threads::joinable)) {
             $thread->detach();
         }
-        Time::HiRes::sleep(0.01);
+        Time::HiRes::sleep(0.005);
     }
 };
 main();
