@@ -9,16 +9,23 @@ my $var :shared;
 
 sub main() {
     async {
-        $var = 1;
+        {
+            lock($var);
+            $var = 1;
+        }
     };
 
     async {
-        $var++;
+        {
+            lock($var);
+            $var++;
+        }
     };
 
     say "var is: ", $var;
     Time::HiRes::sleep(0.01);
     say "var is: ", $var;
+    
 }
 
 my $monitorThread = async {
