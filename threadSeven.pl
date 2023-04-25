@@ -21,7 +21,7 @@ sub main() {
     };
 
     say "key is: ", $redis->get("key");
-    Time::HiRes::sleep(0.01);
+    Time::HiRes::sleep(0.001);
     say "key is: ", $redis->get("key");
 }
 
