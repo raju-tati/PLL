@@ -19,7 +19,6 @@ sub main() {
     say "var is: ", $var;
     Time::HiRes::sleep(0.01);
     say "var is: ", $var;
-    
 }
 
 my $monitorThread = async {
