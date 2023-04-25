@@ -48,7 +48,7 @@ while(1) {
         $monitorThread->detach();
         last;
     } else {
-        Time::HiRes::sleep(0.01);
+        Time::HiRes::sleep(0.001);
     }
 }
 exit();
