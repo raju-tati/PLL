@@ -9,20 +9,15 @@ my %qq :shared;
 
 sub main() {
     async {
-        {
-            lock(%qq);
-            $qq{"key"} = 1;
-        }
+        { lock(%qq); $qq{"key"} = 1; }
     };
+    
     async {
-        {
-            lock(%qq);
-            my $key = $qq{"key"};
-            $qq{"key"} = $key + 1;
-        }
+        { lock(%qq); $qq{"key"}++; }
     };
+
     say "key is: ", $qq{"key"};
-    Time::HiRes::sleep(0.01);
+    Time::HiRes::sleep(0.001);
     say "key is: ", $qq{"key"};
 }
 
