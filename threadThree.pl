@@ -98,10 +98,6 @@ my $monitorThread = async {
         foreach my $thread (threads->list(threads::joinable)) {
             $thread->detach();
         }
-        my @threads = threads->list(threads::all);
-        if(scalar @threads == 0) {
-            last;
-        }
         Time::HiRes::sleep(0.01);
     }
 };
