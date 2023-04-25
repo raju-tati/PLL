@@ -5,7 +5,7 @@ use threads;
 use Time::HiRes;
 
 sub main() {
-    foreach (0..100000) {
+    foreach (0..1000) {
         Time::HiRes::sleep(0.001);
         async {
            say "running thread ", threads->self()->tid();
@@ -13,6 +13,14 @@ sub main() {
     }
 }
 
+my $signalThread = async {
+    use sigtrap 'handler' => \&signalHandler, qw(INT);
+};
+sub signalHandler($signalName) {
+    say "got an intterupt, print some info";
+    my @threads = threads->list(threads::all);
+    say "remaining threads: ", scalar @threads;
+}
 my $monitorThread = async {
     while(1) {
         foreach my $thread (threads->list(threads::joinable)) {
