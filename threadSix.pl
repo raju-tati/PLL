@@ -5,10 +5,10 @@ use threads;
 use Time::HiRes;
 
 sub main() {
-    foreach (0..100) {
-        Time::HiRes::sleep(0.01);
+    foreach (0..100000) {
+        Time::HiRes::sleep(0.001);
         async {
-            say "running thread ", threads->self()->tid();
+           say "running thread ", threads->self()->tid();
         };
     }
 }
@@ -18,7 +18,7 @@ my $monitorThread = async {
         foreach my $thread (threads->list(threads::joinable)) {
             $thread->detach();
         }
-        Time::HiRes::sleep(0.01);
+        Time::HiRes::sleep(0.005);
     }
 };
 main();
