@@ -49,17 +49,22 @@ sub main() {
     };
 }
 
+my $monitorThread = async {
+    while(1) {
+        foreach my $thread (threads->list(threads::joinable)) {
+            $thread->detach();
+        }
+        Time::HiRes::sleep(0.01);
+    }
+};
 main();
-
 while(1) {
-    foreach my $thread (threads->list(threads::joinable)) {
-        $thread->detach();
-    }
-
     my @threads = threads->list(threads::all);
-    if(scalar @threads == 0) {
+    if(scalar @threads == 1) {
+        $monitorThread->detach();
         last;
+    } else {
+        Time::HiRes::sleep(0.01);
     }
-
-    Time::HiRes::sleep(0.25);
 }
+exit();
