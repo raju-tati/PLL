@@ -5,20 +5,20 @@ use threads;
 use threads::shared;
 use Time::HiRes;
 
-my %qq :shared;
+my %hash :shared;
 
 sub main() {
     async {
-        { lock(%qq); $qq{"key"} = 1; }
+        { lock(%hash); $hash{"key"} = 1; }
     };
     
     async {
-        { lock(%qq); $qq{"key"}++; }
+        { lock(%hash); $hash{"key"}++; }
     };
 
-    say "key is: ", $qq{"key"};
+    say "key is: ", $hash{"key"};
     Time::HiRes::sleep(0.001);
-    say "key is: ", $qq{"key"};
+    say "key is: ", $hash{"key"};
 }
 
 my $signalThread = async {
