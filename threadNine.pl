@@ -1,19 +1,16 @@
 package Main;
-use Needs;
+use Basics;
 
-sub main($class) {
+sub main($this) {
     async {
-        if( threads->self->tid() == 2 ) {
-           say "testing threads";
-        } else {}
+        say "testing threads";
     };
 }
 
 1;
 
-################################################################
-use Needs; 
-sub begin() {my $mainObject = Main->new(); $mainObject->main();}
+use Basics;
+sub begin(){my $mainObject = Main->new();$mainObject->main();}
 my $monitorThread = async { while(1) {
 foreach my $thread (threads->list(threads::joinable)) {
 $thread->detach(); } Time::HiRes::sleep(0.005); }};
